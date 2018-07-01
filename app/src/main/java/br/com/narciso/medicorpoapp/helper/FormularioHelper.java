@@ -83,6 +83,7 @@ public class FormularioHelper {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 
         ava.setDataHora(sdf.format(date));
+
         return ava;
     }
 }
