@@ -108,7 +108,16 @@ public class AvaliacaoDAO extends SQLiteOpenHelper {
 
             avaliacoes.add(ava);
         }
+        c.close();
+        close();
 
         return avaliacoes;
+    }
+
+    public void remover(Avaliacao avaliacao) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] params = {String.valueOf(avaliacao.getId())};
+        db.delete("Avaliacoes", "id = ?", params);
     }
 }
