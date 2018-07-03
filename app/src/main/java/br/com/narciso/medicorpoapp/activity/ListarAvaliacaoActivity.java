@@ -35,6 +35,7 @@ public class ListarAvaliacaoActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
+        //Falta ver porque a imagem não está aparecendo quando executa o app
         MenuItem remover = menu.add("Remover").setIcon(R.drawable.trash_icon);
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
