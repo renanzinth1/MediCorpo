@@ -28,6 +28,18 @@ public class ListarAvaliacaoActivity extends AppCompatActivity {
 
         carregaLista();
 
+        avaliacoesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> lista, View view, int position, long id) {
+
+                //O que eu quero?
+                //Exibir os dados de uma avaliação em um pop-up!
+
+                //TODO Falta implementar esta parte para exibir os dados da avaliação após clicar nela
+                Avaliacao avaliacao = (Avaliacao) lista.getItemAtPosition(position);
+            }
+        });
+
         registerForContextMenu(avaliacoesView);
 
     }
@@ -35,7 +47,7 @@ public class ListarAvaliacaoActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-        //Falta ver porque a imagem não está aparecendo quando executa o app
+        //TODO Falta ver porque a imagem não está aparecendo quando executa o app
         MenuItem remover = menu.add("Remover").setIcon(R.drawable.trash_icon);
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -45,25 +57,29 @@ public class ListarAvaliacaoActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                new AlertDialog
-                        .Builder(ListarAvaliacaoActivity.this)
-                        .setTitle("Excluir")
-                        .setMessage("Deseja excluir a avaliação?\n\nAvaliação: " + avaliacao.getDataHora())
-                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                AvaliacaoDAO dao = new AvaliacaoDAO(ListarAvaliacaoActivity.this);
-                                dao.remover(avaliacao);
-                                carregaLista();
-                            }
-                        })
-                        .setNegativeButton("Não", null)
-                        .show();
-
-
+                // Aqui estou chamando um método onde o mesmo cria um AlertDialog
+                // dizendo se deseja remover a avaliação selecionada.
+                callExcludeAlertDialog(avaliacao);
                 return false;
             }
         });
+    }
+
+    private void callExcludeAlertDialog(final Avaliacao avaliacao) {
+        new AlertDialog
+                .Builder(ListarAvaliacaoActivity.this)
+                .setTitle("Excluir")
+                .setMessage("Deseja excluir a avaliação?\n\nAvaliação: " + avaliacao.getDataHora())
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AvaliacaoDAO dao = new AvaliacaoDAO(ListarAvaliacaoActivity.this);
+                        dao.remover(avaliacao);
+                        carregaLista();
+                    }
+                })
+                .setNegativeButton("Não", null)
+                .show();
     }
 
     private void carregaLista() {
