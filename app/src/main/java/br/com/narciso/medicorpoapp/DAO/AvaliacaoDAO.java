@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import br.com.narciso.medicorpoapp.model.Avaliacao;
 public class AvaliacaoDAO extends SQLiteOpenHelper {
 
     public AvaliacaoDAO(Context context) {
-        super(context, "Avaliacao", null, 9);
+        super(context, "Avaliacao", null, 12);
     }
 
     @Override
@@ -50,28 +51,10 @@ public class AvaliacaoDAO extends SQLiteOpenHelper {
     }
 
 
-    public void insere(Avaliacao ava) {
+    public void insere(Avaliacao avaliacao) {
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues dados = new ContentValues();
 
-        dados.put("pescoco", ava.getPescoco());
-        dados.put("ombro", ava.getOmbro());
-        dados.put("peito", ava.getPeito());
-        dados.put("abdomen", ava.getAbdomen());
-        dados.put("bracoEsq", ava.getBracoEsq());
-        dados.put("bracoDir", ava.getBracoDir());
-        dados.put("anteBracoEsq", ava.getAnteBracoEsq());
-        dados.put("anteBracoDir", ava.getAnteBracoDir());
-        dados.put("cintura", ava.getCintura());
-        dados.put("gluteos", ava.getGluteos());
-        dados.put("coxaEsq", ava.getCoxaEsq());
-        dados.put("coxaDir", ava.getCoxaDir());
-        dados.put("panturrilhaEsq", ava.getPanturrilhaEsq());
-        dados.put("panturrilhaDir", ava.getPanturrilhaDir());
-        dados.put("altura", ava.getAltura());
-        dados.put("peso", ava.getPeso());
-        dados.put("observacoes", ava.getObservacoes());
-        dados.put("dataHora", ava.getDataHora());
+        ContentValues dados = pegaDadosDaAvaliacao(avaliacao);
 
         db.insert("Avaliacoes", null, dados);
         close();
@@ -119,5 +102,40 @@ public class AvaliacaoDAO extends SQLiteOpenHelper {
 
         String[] params = {String.valueOf(avaliacao.getId())};
         db.delete("Avaliacoes", "id = ?", params);
+    }
+
+
+    public void altera(Avaliacao avaliacao) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues dados = pegaDadosDaAvaliacao(avaliacao);
+
+        String[] params = {String.valueOf(avaliacao.getId())};
+        db.update("Avaliacoes", dados, "id = ?", params);
+    }
+
+    @NonNull
+    private ContentValues pegaDadosDaAvaliacao(Avaliacao ava) {
+        ContentValues dados = new ContentValues();
+
+        dados.put("pescoco", ava.getPescoco());
+        dados.put("ombro", ava.getOmbro());
+        dados.put("peito", ava.getPeito());
+        dados.put("abdomen", ava.getAbdomen());
+        dados.put("bracoEsq", ava.getBracoEsq());
+        dados.put("bracoDir", ava.getBracoDir());
+        dados.put("anteBracoEsq", ava.getAnteBracoEsq());
+        dados.put("anteBracoDir", ava.getAnteBracoDir());
+        dados.put("cintura", ava.getCintura());
+        dados.put("gluteos", ava.getGluteos());
+        dados.put("coxaEsq", ava.getCoxaEsq());
+        dados.put("coxaDir", ava.getCoxaDir());
+        dados.put("panturrilhaEsq", ava.getPanturrilhaEsq());
+        dados.put("panturrilhaDir", ava.getPanturrilhaDir());
+        dados.put("altura", ava.getAltura());
+        dados.put("peso", ava.getPeso());
+        dados.put("observacoes", ava.getObservacoes());
+        dados.put("dataHora", ava.getDataHora());
+        return dados;
     }
 }

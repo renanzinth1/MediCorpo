@@ -1,6 +1,7 @@
 package br.com.narciso.medicorpoapp.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,11 +33,25 @@ public class ListarAvaliacaoActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> lista, View view, int position, long id) {
 
-                //O que eu quero?
-                //Exibir os dados de uma avaliação em um pop-up!
-
-                //TODO Falta implementar esta parte para exibir os dados da avaliação após clicar nela
                 Avaliacao avaliacao = (Avaliacao) lista.getItemAtPosition(position);
+
+                new AlertDialog.Builder(ListarAvaliacaoActivity.this)
+                        .setTitle("Avaliação - " + avaliacao.getDataHora())
+                        .setIcon(R.drawable.inspection_icon)
+                        .setMessage(
+                        "Pescoço: " + avaliacao.getPescoco()+ "\t\t" + "Ombro: " + avaliacao.getOmbro() + "\n\n" +
+                        "Peito: " + avaliacao.getPeito() + "\t\t" + "Abdomen: " + avaliacao.getAbdomen() + "\n\n" +
+                        "Braço Esq: " + avaliacao.getBracoEsq() + "\t\t" + "Braço Dir: " + avaliacao.getBracoDir() + "\n\n" +
+                        "Ante-Braço Esq: " + avaliacao.getAnteBracoEsq() + "\t\t" + "Ante-Braço Dir: " + avaliacao.getAnteBracoDir() + "\n\n" +
+                        "Cintura: " + avaliacao.getCintura() + "\t\t" + "Gluteos: " + avaliacao.getGluteos() + "\n\n" +
+                        "Coxa Esq: " + avaliacao.getCoxaEsq() + "\t\t" + "Coxa Dir: " + avaliacao.getCoxaDir() + "\n\n" +
+                        "Panturrilha Esq: " + avaliacao.getPanturrilhaEsq() + "\t\t" + "Panturrilha Dir: " + avaliacao.getPanturrilhaDir() + "\n\n" +
+                        "Altura: " + avaliacao.getAltura() + "\t\t" + "Peso: " + avaliacao.getPeso() + "\n\n" +
+                         "IMC: " + avaliacao.getIMC() + "\n\n" +
+                         "Observações:\n" + avaliacao.getObservacoes())
+                        .setPositiveButton("Fechar", null)
+                        .show();
+
             }
         });
 
@@ -47,11 +62,23 @@ public class ListarAvaliacaoActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
+
+        MenuItem editar = menu.add("Editar");
         //TODO Falta ver porque a imagem não está aparecendo quando executa o app
         MenuItem remover = menu.add("Remover").setIcon(R.drawable.trash_icon);
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         final Avaliacao avaliacao = (Avaliacao) avaliacoesView.getItemAtPosition(info.position);
+
+        editar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent it = new Intent(ListarAvaliacaoActivity.this, CadastrarAvaliacaoActivity.class);
+                it.putExtra("avaliacao", avaliacao);
+                startActivity(it);
+                return false;
+            }
+        });
 
         remover.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -69,6 +96,7 @@ public class ListarAvaliacaoActivity extends AppCompatActivity {
         new AlertDialog
                 .Builder(ListarAvaliacaoActivity.this)
                 .setTitle("Excluir")
+                .setIcon(R.drawable.error_icon)
                 .setMessage("Deseja excluir a avaliação?\n\nAvaliação: " + avaliacao.getDataHora())
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override

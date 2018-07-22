@@ -1,6 +1,9 @@
 package br.com.narciso.medicorpoapp.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 public class Avaliacao implements Serializable {
@@ -20,9 +23,8 @@ public class Avaliacao implements Serializable {
     private float coxaDir;
     private float panturrilhaEsq;
     private float panturrilhaDir;
-    private double altura;
-    private double peso;
-    private double IMC;
+    private float altura;
+    private float peso;
     private String observacoes;
     private String dataHora;
 
@@ -171,28 +173,20 @@ public class Avaliacao implements Serializable {
         this.panturrilhaDir = panturrilhaDir;
     }
 
-    public double getAltura() {
+    public float getAltura() {
         return altura;
     }
 
-    public void setAltura(double altura) {
+    public void setAltura(float altura) {
         this.altura = altura;
     }
 
-    public double getPeso() {
+    public float getPeso() {
         return peso;
     }
 
-    public void setPeso(double peso) {
+    public void setPeso(float peso) {
         this.peso = peso;
-    }
-
-    public double getIMC() {
-        return this.peso / Math.pow(this.altura, 2);
-    }
-
-    public void setIMC() {
-        this.IMC = getIMC();
     }
 
     public String getObservacoes() {
@@ -209,6 +203,14 @@ public class Avaliacao implements Serializable {
 
     public void setDataHora(String dataHora) {
         this.dataHora = dataHora;
+    }
+
+    public float getIMC() {
+        double imc = this.peso / (this.altura * this.altura);
+
+        BigDecimal bd = new BigDecimal(imc).setScale(2, RoundingMode.HALF_UP);
+
+        return Float.valueOf(bd.floatValue());
     }
 
     @Override
